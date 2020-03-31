@@ -13,8 +13,8 @@ num_cluster_nodes=$(crudini --get terraform-eks.ini EKS-CLUSTER num_cluster_node
 #####ADVANCED(When required user will modify based on setup)#######
 k8s_version=$(crudini --get terraform-eks.ini ADVANCED k8s_version)                      #Kubernetes version
 EKS_cluster_username=$(crudini --get terraform-eks.ini ADVANCED EKS_cluster_username)    #Username of the eks cluster
-DISTRO=$(crudini --get terraform-eks.ini ADVANCED DISTRO)                                #Choose one of ubuntu/centos
 max_cluster_nodes=$(crudini --get terraform-eks.ini ADVANCED max_cluster_nodes)    #Maximum number of managed node groups per cluster
+DISTRO=$(crudini --get terraform-eks.ini ADVANCED DISTRO)                                #Choose one of ubuntu/centos
 
 key=$( echo $pem | cut -d. -f1)
 network=$(echo $vpc_cidr | cut -d '.' -f1-2)

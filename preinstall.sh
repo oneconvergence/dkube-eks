@@ -2,8 +2,8 @@
 install_utilities() {
 	sudo  apt-get update -y
 	sudo  apt-get install expect -y	
+	sudo  apt-get install unzip
 	sudo  apt-get install python3-pip -y
-	sudo  apt-get install unzip -y
 	sudo  apt install crudini -y
 	sudo  apt-get install sshpass
 }
