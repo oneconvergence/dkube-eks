@@ -98,17 +98,17 @@ sed -n '/kubeconfig =/,//p'  result.txt > kubeconfig
 sed -i 's/\x1b\[[0-9;]*m//g' kubeconfig
 sed -i '1d' kubeconfig
 sed -i '1d' kubeconfig
-if [ ! -d $HOME/.kube ];then
-  mkdir  $HOME/.kube
-fi
-echo $installer_user_passwd | sudo -S chown -R $installer_username:$installer_username $HOME/.kube
-cp kubeconfig $HOME/.kube/config
-sudo mkdir -p /root/.kube
-echo $installer_user_passwd | sudo -S cp kubeconfig /root/.kube/config
+#if [ ! -d $HOME/.kube ];then
+#  mkdir  $HOME/.kube
+#fi
+#echo $installer_user_passwd | sudo -S chown -R $installer_username:$installer_username $HOME/.kube
+#cp kubeconfig $HOME/.kube/config
+#sudo mkdir -p /root/.kube
+#echo $installer_user_passwd | sudo -S cp kubeconfig /root/.kube/config
 
 sleep 3m
 #Apply the yaml file , what we got above
-kubectl apply -f config_map_aws_auth.yaml
+kubectl apply -f config_map_aws_auth.yaml --kubeconfig=$PWD/kubeconfig
 if [[ "${?}" -ne 0 ]];then
         echo "Something went wrong !! Applying config_map_aws_auth.yaml Failed !!"
         exit 1
