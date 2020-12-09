@@ -101,7 +101,7 @@ sed -i '1d' kubeconfig
 #if [ ! -d $HOME/.kube ];then
 #  mkdir  $HOME/.kube
 #fi
-#echo $installer_user_passwd | sudo -S chown -R $installer_username:$installer_username $HOME/.kube
+#echo $installer_user_passwd | sudo -S chown -R $installer_username:$installer_username $PWD/kubeconfig
 #cp kubeconfig $HOME/.kube/config
 #sudo mkdir -p /root/.kube
 #echo $installer_user_passwd | sudo -S cp kubeconfig /root/.kube/config
@@ -113,3 +113,4 @@ if [[ "${?}" -ne 0 ]];then
         echo "Something went wrong !! Applying config_map_aws_auth.yaml Failed !!"
         exit 1
 fi
+echo $installer_user_passwd | sudo -S chown -R $installer_username:$installer_username $PWD/kubeconfig
