@@ -86,4 +86,5 @@ fi
 #if [ ! -d $HOME/.kube ];then
 #  mkdir  $HOME/.kube
 #fi
-#cp kube_config_cluster.yml $HOME/.kube/config
+echo "Saving cluster config to ./kubeconfig file."
+cp kube_config_cluster.yml kubeconfig
