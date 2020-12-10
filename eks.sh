@@ -51,15 +51,15 @@ if [ $(id -u) = "0" ]; then
           export PATH=$PATH:$HOME/bin
 fi
 #Untar the tar file. i.e terraform script
-echo $installer_user_passwd | sudo -S tar -xvf eks-script3.tar
+tar -xvf eks-script3.tar
 
 if [[ -e terraform_0.12.9_linux_amd64.zip ]];then
-  echo $installer_user_passwd | sudo -S unzip terraform_0.12.9_linux_amd64.zip
+  unzip terraform_0.12.9_linux_amd64.zip
   if [[ "${?}" -ne 0 ]];then
         echo "Something went wrong !! File terraform_0.12.9_linux_amd64.zip not unzipped."
         exit 1
   fi
-  echo $installer_user_passwd | sudo -S mv terraform eks-getting-started
+  mv terraform eks-getting-started
   if [[ "${?}" -ne 0 ]];then
         echo "Something went wrong !! Could not move file terraform into eks-getting-started directory."
         exit 1
@@ -67,7 +67,7 @@ if [[ -e terraform_0.12.9_linux_amd64.zip ]];then
 fi
 
 #Changed to working directory
-echo $installer_user_passwd | sudo -S chown -R ${installer_username}:${installer_username} eks-getting-started
+#echo $installer_user_passwd | sudo -S chown -R ${installer_username}:${installer_username} eks-getting-started
 cd eks-getting-started
 
 
@@ -79,7 +79,7 @@ sed -i "s/demo/$EKS_core_name-&/g" outputs.tf
 sed -i "s/1.12/$k8s_version/g" variables.tf
 sed -i "s/\"us-west-2\"/\"$region\"/" providers.tf
 sed -i -e "s/demo/$EKS_core_name-&/g" -e "s|\"10.0.0.0/16\"|\"$vpc_cidr\"|" -e "s/\"10.0.\${count.index}.0\/24\"/\"$network.\${count.index}.0\/24\"/" vpc.tf
-echo $installer_user_passwd | sudo -S  rm -rf terraform.tfstate terraform.tfstate.backup
+rm -rf terraform.tfstate terraform.tfstate.backup
 #Init Terraform
 ./terraform init
 touch result.txt
@@ -113,4 +113,4 @@ if [[ "${?}" -ne 0 ]];then
         echo "Something went wrong !! Applying config_map_aws_auth.yaml Failed !!"
         exit 1
 fi
-echo $installer_user_passwd | sudo -S chown -R $installer_username:$installer_username $PWD/kubeconfig
+#echo $installer_user_passwd | sudo -S chown -R $installer_username:$installer_username $PWD/kubeconfig
