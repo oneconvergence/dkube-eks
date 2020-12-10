@@ -60,11 +60,11 @@ else
     sed -i -e "s/kubernetes_version =.*/kubernetes_version = \"$kubernetes_version\"/g" main.tf
 fi
 
-if [ -z "$plugin" ]; then
-    echo "plugin is not provided, using flannel"
+if [ -z "$network_plugin" ]; then
+    echo "network plugin is not provided, using flannel"
     sed -i -e "s/plugin =.*/plugin = \"flannel\"/g" main.tf
 else
-    sed -i -e "s/plugin =.*/plugin = \"$plugin\"/g" main.tf
+    sed -i -e "s/plugin =.*/plugin = \"$network_plugin\"/g" main.tf
 fi
 
 #Changed all resource name in terraform script
