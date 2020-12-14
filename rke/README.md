@@ -11,7 +11,7 @@
    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
    sudo apt update
-   sudo apt install docker-ce
+   sudo apt install docker-ce-cli=5:19.03.14~3-0~ubuntu-bionic docker-ce=5:19.03.14~3-0~ubuntu-bionic
    sudo usermod -aG docker $USER
    sudo systemctl restart docker
    sudo systemctl status docker
