@@ -6,6 +6,7 @@ network_plugin=$(crudini --get terraform-rke.ini RKE-CLUSTER plugin)            
 ipaddress=$(crudini --get terraform-rke.ini RKE-CLUSTER ipaddress)                       #Node IP address
 user=$(crudini --get terraform-rke.ini RKE-CLUSTER user)                                 #Node Username
 ssh_key_path=$(crudini --get terraform-rke.ini RKE-CLUSTER ssh_key_path)                 #ssh key to access node
+max_pods_per_node=$(crudini --get terraform-rke.ini RKE-CLUSTER max_pods_per_node)       #Max pods per node
 
 source $HOME/.bashrc
 center(){
@@ -26,6 +27,7 @@ display_help() {
   printf "%-100s${NC}\n" "ipaddress:                IP address of the node"
   printf "%-100s${NC}\n" "user:                     Username of the node"
   printf "%-100s${NC}\n" "ssh_key_path:             SSH key to access the node"
+  printf "%-100s${NC}\n" "max_pods_per_node:        Max pods per node"
   exit $1
 }
 
@@ -53,6 +55,7 @@ fi
 sed -i -e "s/NODEIP/$ipaddress/g" main.tf
 sed -i -e "s/NODEUSER/$user/g" main.tf
 sed -i -e "s#SSHKEYPATH#$ssh_key_path#g" main.tf
+sed -i -e "s#POD_COUNT#$max_pods_per_node#g" main.tf
 if [ -z "$kubernetes_version" ]; then
     echo "kubernetes version is not provided, using v1.16.15-rancher1-3"
     sed -i -e "s/kubernetes_version =.*/kubernetes_version = \"v1.16.15-rancher1-3\"/g" main.tf
