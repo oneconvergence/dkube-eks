@@ -77,6 +77,7 @@ sed -i "s/demo/$EKS_core_name-&/g" variables.tf
 sed -i -e "s/demo/$EKS_core_name-&/g" -e "/image_id *= \"ami-[a-zA-Z0-9]*\"/s/\"ami-[a-zA-Z0-9]*\"/\"$ami\"/" -e "/instance_type *= \"[a-zA-Z0-9.]*\"/s/\"[a-zA-Z0-9.]*\"/\"$instance_type\"/" -e "/key_name *= \"[a-zA-Z0-9-]*\"/s/\"[a-zA-Z0-9-]*\"/\"$key\"/" -e "/max_size *= [0-9]/s/[0-9]/$max_cluster_nodes/" -e "/desired_capacity *= [0-9]/s/[0-9]/$num_cluster_nodes/" eks-worker-nodes.tf
 sed -i "s/demo/$EKS_core_name-&/g" outputs.tf
 sed -i "s/1.12/$k8s_version/g" variables.tf
+sed -i "s/demo/$EKS_core_name-&/g" efs.tf
 sed -i "s/\"us-west-2\"/\"$region\"/" providers.tf
 sed -i -e "s/demo/$EKS_core_name-&/g" -e "s|\"10.0.0.0/16\"|\"$vpc_cidr\"|" -e "s/\"10.0.\${count.index}.0\/24\"/\"$network.\${count.index}.0\/24\"/" vpc.tf
 rm -rf terraform.tfstate terraform.tfstate.backup
