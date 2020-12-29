@@ -92,7 +92,7 @@ if [[ "${?}" -ne 0 ]];then
 fi
 
 #Read terraform apply output in yaml file
-sed -n '/config_map_aws_auth =/,/kubeconfig/p'  result.txt > config_map_aws_auth.yaml
+sed -n '/config_map_aws_auth =/,/efs_server_ip/p'  result.txt > config_map_aws_auth.yaml
 sed -i '1d; $d' config_map_aws_auth.yaml
 sed -i '1d' config_map_aws_auth.yaml
 sed -n '/kubeconfig =/,//p'  result.txt > kubeconfig
