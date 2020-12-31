@@ -55,6 +55,7 @@ fi
 if [ "$node_provider" == "gcp" ]; then
   cp terraform gcp
   cd gcp
+  rm -rf terraform.d terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl
   sed -i -e "s/INSTANCE_NAME/$gcp_instance_name/g" main.tf
   sed -i -e "s/GPU_COUNT/$gcp_gpu_count/g" main.tf
   ./terraform init
@@ -67,8 +68,10 @@ if [ "$node_provider" == "gcp" ]; then
     exit 1
   fi
   # wait for gcp instance to come up and complete startup script
+  echo "waiting for start up script to finish"
   sleep 3m
-  ipaddress=$(./terraform output | grep ip_address | awk '{print \$3}')
+  ipaddress=$(./terraform output | grep ip_address | awk '{print $3}' | tr -d '"')
+  cd -
 fi
 
 
