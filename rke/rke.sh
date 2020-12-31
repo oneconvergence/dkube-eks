@@ -7,6 +7,8 @@ ipaddress=$(crudini --get terraform-rke.ini RKE-CLUSTER ipaddress)              
 user=$(crudini --get terraform-rke.ini RKE-CLUSTER user)                                 #Node Username
 ssh_key_path=$(crudini --get terraform-rke.ini RKE-CLUSTER ssh_key_path)                 #ssh key to access node
 max_pods_per_node=$(crudini --get terraform-rke.ini RKE-CLUSTER max_pods_per_node)       #Max pods per node
+node_provider=$(crudini --get terraform-rke.ini RKE-CLUSTER node_provider)
+gcp_instance_name=$(crudini --get terraform-rke.ini RKE-CLUSTER gcp_instance_name)
 
 source $HOME/.bashrc
 center(){
@@ -37,10 +39,7 @@ if [ $(id -u) = "0" ]; then
 fi
 
 # cleaning stale files if present
-rm -rf main.tf provider.tf terraform terraform.d terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl
-
-# extract rke terraform scripts
-tar -xvf rke_scripts.tar
+rm -rf terraform terraform.d terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl
 
 # extract terraform and provider modules
 if [[ -e terraform_0.14.0_linux_amd64.zip ]];then
@@ -50,6 +49,26 @@ if [[ -e terraform_0.14.0_linux_amd64.zip ]];then
         exit 1
   fi
 fi
+
+# If node provider is gcp then bring up gcp instance with 4 gpus attached
+if [ "$node_provider" == "gcp" ]; then
+  cp terraform gcp
+  cd gcp
+  sed -i -e "s/INSTANCE_NAME/$gcp_instance_name/g" main.tf
+  ./terraform init
+  ./terraform validate
+  touch terraform_apply_result.txt
+  #Apply Terraform
+  ./terraform apply -auto-approve -no-color | tee terraform_apply_result.txt
+  if [[ "${?}" -ne 0 ]];then
+    echo "Something went wrong !! terroform apply Failed !!"
+    exit 1
+  fi
+  # wait for gcp instance to come up and complete startup script
+  sleep 3m
+  ipaddress=$(./terraform output | grep ip_address | awk '{print \$3}')
+fi
+
 
 # update terraform script with cluster details
 sed -i -e "s/NODEIP/$ipaddress/g" main.tf
