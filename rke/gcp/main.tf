@@ -42,7 +42,7 @@ resource "google_compute_instance" "INSTANCE_NAME" {
 
   guest_accelerator{
     type = "nvidia-tesla-k80" // Type of GPU attahced
-    count = 4 // Num of GPU attached
+    count = GPU_COUNT
   }
 
   scheduling{

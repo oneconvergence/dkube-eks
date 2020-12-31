@@ -9,6 +9,7 @@ ssh_key_path=$(crudini --get terraform-rke.ini RKE-CLUSTER ssh_key_path)        
 max_pods_per_node=$(crudini --get terraform-rke.ini RKE-CLUSTER max_pods_per_node)       #Max pods per node
 node_provider=$(crudini --get terraform-rke.ini RKE-CLUSTER node_provider)
 gcp_instance_name=$(crudini --get terraform-rke.ini RKE-CLUSTER gcp_instance_name)
+gcp_gpu_count=$(crudini --get terraform-rke.ini RKE-CLUSTER gcp_gpu_count)
 
 source $HOME/.bashrc
 center(){
@@ -55,6 +56,7 @@ if [ "$node_provider" == "gcp" ]; then
   cp terraform gcp
   cd gcp
   sed -i -e "s/INSTANCE_NAME/$gcp_instance_name/g" main.tf
+  sed -i -e "s/GPU_COUNT/$gcp_gpu_count/g" main.tf
   ./terraform init
   ./terraform validate
   touch terraform_apply_result.txt
