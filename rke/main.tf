@@ -7,7 +7,7 @@ resource "rke_cluster" "cluster" {
   }
   kubernetes_version = "v1.16.15-rancher1-3"
   network {
-    plugin = "flannel"
+    plugin = "canal"
   }
   services {
     kubelet {

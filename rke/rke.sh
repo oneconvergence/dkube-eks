@@ -88,8 +88,8 @@ else
 fi
 
 if [ -z "$network_plugin" ]; then
-    echo "network plugin is not provided, using flannel"
-    sed -i -e "s/plugin =.*/plugin = \"flannel\"/g" main.tf
+    echo "network plugin is not provided, using canal"
+    sed -i -e "s/plugin =.*/plugin = \"canal\"/g" main.tf
 else
     sed -i -e "s/plugin =.*/plugin = \"$network_plugin\"/g" main.tf
 fi
