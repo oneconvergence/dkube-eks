@@ -7,6 +7,10 @@ resource "rke_cluster" "cluster" {
   }
   kubernetes_version = "v1.16.15-rancher1-3"
   network {
+    mtu = 0
+    options = {
+      flannel_backend_type = "vxlan"
+    }
     plugin = "canal"
   }
   services {
