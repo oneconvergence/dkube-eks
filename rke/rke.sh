@@ -94,7 +94,7 @@ if [ "$node_provider" == "aws" ]; then
   sleep 3m
   ipaddress=$(./terraform output | grep instance_elastic_ip | awk '{print $3}' | tr -d '"')
   cd -
-  scp -i ssh-rsa aws/startup.sh ubuntu@$ipaddress:/tmp
+  scp -o StrictHostKeyChecking=no -i ssh-rsa aws/startup.sh ubuntu@$ipaddress:/tmp
   ssh -i ssh-rsa ubuntu@$ipaddress "bash /tmp/startup.sh"
 fi
 
