@@ -10,6 +10,7 @@ max_pods_per_node=$(crudini --get terraform-rke.ini RKE-CLUSTER max_pods_per_nod
 node_provider=$(crudini --get terraform-rke.ini RKE-CLUSTER node_provider)
 gcp_instance_name=$(crudini --get terraform-rke.ini RKE-CLUSTER gcp_instance_name)
 gcp_gpu_count=$(crudini --get terraform-rke.ini RKE-CLUSTER gcp_gpu_count)
+aws_resource_name=$(crudini --get terraform-rke.ini RKE-CLUSTER aws_resource_name)
 
 source $HOME/.bashrc
 center(){
@@ -71,6 +72,27 @@ if [ "$node_provider" == "gcp" ]; then
   echo "waiting for start up script to finish"
   sleep 3m
   ipaddress=$(./terraform output | grep ip_address | awk '{print $3}' | tr -d '"')
+  cd -
+fi
+
+# If node provider is gcp then bring up gcp instance with 4 gpus attached
+if [ "$node_provider" == "aws" ]; then
+  cp terraform aws
+  cd aws
+  rm -rf terraform.d terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl
+  sed -i -e "s/RESOURCE_NAME/$aws_resource_name/g" main.tf
+  sed -i -e "s/RESOURCE_NAME/$aws_resource_name/g" outputs.tf
+  ./terraform init
+  ./terraform validate
+  touch terraform_apply_result.txt
+  #Apply Terraform
+  ./terraform apply -auto-approve -no-color | tee terraform_apply_result.txt
+  if [[ "${?}" -ne 0 ]];then
+    echo "Something went wrong !! terroform apply Failed !!"
+    exit 1
+  fi
+  sleep 1m
+  ipaddress=$(./terraform output | grep instance_elastic_ip | awk '{print $3}' | tr -d '"')
   cd -
 fi
 
