@@ -8,5 +8,5 @@ variable "public_key_file" {
 
 variable "instance_type" {
   description = "the type of EC2 instance to run. should be one of the 'Accelerated Computing' types in the docs (https://aws.amazon.com/ec2/instance-types/)"
-  default     = "p3.2xlarge"
+  default     = "p3.8xlarge"
 }

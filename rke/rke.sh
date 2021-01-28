@@ -91,7 +91,7 @@ if [ "$node_provider" == "aws" ]; then
     echo "Something went wrong !! terroform apply Failed !!"
     exit 1
   fi
-  sleep 3m
+  sleep 4m
   ipaddress=$(./terraform output | grep instance_elastic_ip | awk '{print $3}' | tr -d '"')
   cd -
   scp -o StrictHostKeyChecking=no -i ssh-rsa aws/startup.sh ubuntu@$ipaddress:/tmp
