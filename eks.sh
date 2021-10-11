@@ -2,19 +2,14 @@
 
 #######EKS-CLUSTER######
 EKS_core_name=$(crudini --get terraform-eks.ini EKS-CLUSTER EKS_CORE_NAME)
-vpc_cidr=$(crudini --get terraform-eks.ini EKS-CLUSTER vpc_cidr)                      #Fixed CIDR block of 24
-pem=$(crudini --get terraform-eks.ini EKS-CLUSTER pem)                                #aws pem file to access cluster
-ami=$(crudini --get terraform-eks.ini EKS-CLUSTER ami)                                #AMI-id of EKS Image
-instance_type=$(crudini --get terraform-eks.ini EKS-CLUSTER instance_type)            #Instance type for your cluster
-region=$(crudini --get terraform-eks.ini EKS-CLUSTER region)                          #Region for your aws cluster
-max_cluster_nodes=$(crudini --get terraform-eks.ini EKS-CLUSTER max_cluster_nodes)    #Maximum number of managed node groups per cluster
-num_cluster_nodes=$(crudini --get terraform-eks.ini EKS-CLUSTER num_cluster_nodes)    #Number of nodes desired for current cluster
-
-#####ADVANCED(When required user will modify based on setup)#######
-k8s_version=$(crudini --get terraform-eks.ini ADVANCED k8s_version)                      #Kubernetes version
-EKS_cluster_username=$(crudini --get terraform-eks.ini ADVANCED EKS_cluster_username)    #Username of the eks cluster
-max_cluster_nodes=$(crudini --get terraform-eks.ini ADVANCED max_cluster_nodes)    #Maximum number of managed node groups per cluster
-DISTRO=$(crudini --get terraform-eks.ini ADVANCED DISTRO)                                #Choose one of ubuntu/centos
+vpc_cidr=$(crudini --get terraform-eks.ini EKS-CLUSTER vpc_cidr)                      # Fixed CIDR block of 24
+pem=$(crudini --get terraform-eks.ini EKS-CLUSTER pem)                                # aws pem file to access cluster
+ami=$(crudini --get terraform-eks.ini EKS-CLUSTER ami)                                # AMI-id of EKS Image
+instance_type=$(crudini --get terraform-eks.ini EKS-CLUSTER instance_type)            # Instance type for your cluster
+region=$(crudini --get terraform-eks.ini EKS-CLUSTER region)                          # Region for your aws cluster
+max_cluster_nodes=$(crudini --get terraform-eks.ini EKS-CLUSTER max_cluster_nodes)    # Maximum number of managed node groups per cluster
+num_cluster_nodes=$(crudini --get terraform-eks.ini EKS-CLUSTER num_cluster_nodes)    # Number of nodes desired for current cluster
+k8s_version=$(crudini --get terraform-eks.ini EKS-CLUSTER k8s_version)                # Kubernetes version
 
 key=$( echo $pem | cut -d. -f1)
 network=$(echo $vpc_cidr | cut -d '.' -f1-2)
