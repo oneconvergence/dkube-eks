@@ -44,10 +44,10 @@ fi
 rm -rf terraform terraform.d terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl
 
 # extract terraform and provider modules
-if [[ -e terraform_0.14.0_linux_amd64.zip ]];then
-  unzip terraform_0.14.0_linux_amd64.zip
+if [[ -e terraform-provider-rke_1.2.4_linux_amd64.zip ]];then
+  unzip terraform-provider-rke_1.2.4_linux_amd64.zip
   if [[ "${?}" -ne 0 ]];then
-        echo "Something went wrong !! File terraform_0.14.0_linux_amd64.zip not unzipped."
+        echo "Something went wrong !! File terraform-provider-rke_1.2.4_linux_amd64.zip not unzipped."
         exit 1
   fi
 fi
