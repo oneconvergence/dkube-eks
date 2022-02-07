@@ -16,14 +16,14 @@ resource "rke_cluster" "cluster" {
   services {
     kube-api {
       extra_args = {
-        service-account-issuer = kubernetes.default.svc
-        service-account-signing-key-file = /etc/kubernetes/ssl/kube-service-account-token-key.pem
+        service-account-issuer = "kubernetes.default.svc"
+        service-account-signing-key-file = "/etc/kubernetes/ssl/kube-service-account-token-key.pem"
       }
     }
     kube-controller {
       extra_args = {
-        cluster-signing-cert-file = /etc/kubernetes/ssl/kube-ca.pem
-        cluster-signing-key-file = /etc/kubernetes/ssl/kube-ca-key.pem
+        cluster-signing-cert-file = "/etc/kubernetes/ssl/kube-ca.pem"
+        cluster-signing-key-file = "/etc/kubernetes/ssl/kube-ca-key.pem"
       }
     }
     kubelet {
