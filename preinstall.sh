@@ -19,7 +19,7 @@ install_awscli() {
         sudo pip3 install awscli --ignore-installed six
         aws --version
         if [[ "${?}" -ne 0 ]];then
-                echo "awscli note installed properly ..."
+                echo "awscli not installed properly ..."
                 exit 0
         fi
         echo "configuring aws ..."
@@ -66,6 +66,15 @@ install_kubectl() {
         fi
 }
 
+install_terraform() {
+	echo "Installing terraform\n"
+	curl -LO https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+	echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+	sudo apt-get update -y
+	sudo apt-get install jq terraform -y
+	terraform version
+}
+
 get_kubeconfig() {
         sudo pip3 install awscli --ignore-installed six
         sudo apt install jq -y
@@ -106,5 +115,6 @@ else
         install_iam_authenticator
         install_docker
         install_kubectl
+	install_terraform
 fi
 
