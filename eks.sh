@@ -48,23 +48,9 @@ fi
 #Untar the tar file. i.e terraform script
 tar -xvf eks-script3.tar
 
-if [[ -e terraform_0.12.9_linux_amd64.zip ]];then
-  unzip terraform_0.12.9_linux_amd64.zip
-  if [[ "${?}" -ne 0 ]];then
-        echo "Something went wrong !! File terraform_0.12.9_linux_amd64.zip not unzipped."
-        exit 1
-  fi
-  mv terraform eks-getting-started
-  if [[ "${?}" -ne 0 ]];then
-        echo "Something went wrong !! Could not move file terraform into eks-getting-started directory."
-        exit 1
-  fi
-fi
-
 #Changed to working directory
 #echo $installer_user_passwd | sudo -S chown -R ${installer_username}:${installer_username} eks-getting-started
 cd eks-getting-started
-
 
 #Changed all resource name in terraform script
 sed -i -e "s/demo/$EKS_core_name-&/g" -e "/version *= \"[0-9.]*\"/s/\"[0-9.]*\"/\"$k8s_version\"/" eks-cluster.tf
@@ -77,10 +63,10 @@ sed -i "s/\"us-west-2\"/\"$region\"/" providers.tf
 sed -i -e "s/demo/$EKS_core_name-&/g" -e "s|\"10.0.0.0/16\"|\"$vpc_cidr\"|" -e "s/\"10.0.\${count.index}.0\/24\"/\"$network.\${count.index}.0\/24\"/" vpc.tf
 rm -rf terraform.tfstate terraform.tfstate.backup
 #Init Terraform
-./terraform init
+terraform init
 touch result.txt
 #Apply Terraform
-./terraform apply -auto-approve -no-color |  tee result.txt
+terraform apply -auto-approve -no-color |  tee result.txt
 if [[ "${?}" -ne 0 ]];then
   echo "Something went wrong !! terroform apply Failed !!"
   exit 1
@@ -90,10 +76,16 @@ fi
 sed -n '/config_map_aws_auth =/,/efs_server_ip/p'  result.txt > config_map_aws_auth.yaml
 sed -i '1d; $d' config_map_aws_auth.yaml
 sed -i '1d' config_map_aws_auth.yaml
+sed -i '1d' config_map_aws_auth.yaml
 sed -n '/kubeconfig =/,//p'  result.txt > kubeconfig
 sed -i 's/\x1b\[[0-9;]*m//g' kubeconfig
 sed -i '1d' kubeconfig
 sed -i '1d' kubeconfig
+sed -i 's/EOT//g' kubeconfig
+sed -i 's/EOT//g' config_map_aws_auth.yaml
+
+cluster_name=`terraform show | grep -o 'terraform-eks.*-demo' | head -1`
+aws eks update-kubeconfig --name $cluster_name --region $region --kubeconfig=$PWD/kubeconfig
 #if [ ! -d $HOME/.kube ];then
 #  mkdir  $HOME/.kube
 #fi
@@ -110,3 +102,6 @@ if [[ "${?}" -ne 0 ]];then
         exit 1
 fi
 #echo $installer_user_passwd | sudo -S chown -R $installer_username:$installer_username $PWD/kubeconfig
+
+mkdir -p $HOME/.dkube
+cp $PWD/kubeconfig $HOME/.dkube
