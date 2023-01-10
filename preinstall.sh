@@ -9,7 +9,7 @@ install_utilities() {
         sudo  apt-get update -y
         sudo  apt-get install expect -y
         sudo  apt-get install python3-pip -y
-        sudo  apt-get install unzip -y
+        sudo  apt-get install unzip wget -y
         sudo  apt install crudini -y
         sudo  apt-get install sshpass -y
 }
@@ -68,7 +68,7 @@ install_kubectl() {
 
 install_terraform() {
 	echo "Installing terraform\n"
-	curl -LO https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+	wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
 	echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 	sudo apt-get update -y
 	sudo apt-get install jq terraform -y
