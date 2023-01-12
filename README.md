@@ -1,20 +1,6 @@
 # Install Prerequisites
 
-The installation requires Ubuntu 18.04
-
-preinstall.sh installs the prerequisites to install the EKS cluster using terraform. The following packages are installed.
-- python3
-- awscli
-- aws-iam-authenticator
-- docker (required for DKube install)
-- kubectl
-
-Run the following commands to install the prerequisites.
-```
-# bash preinstall.sh
-# source ~/.bashrc
-```
-# Install EKS Cluster
+The installation requires Ubuntu 20.04
 
 Edit terraform-eks.ini and fill in the required parameter values.
 
@@ -37,9 +23,26 @@ eks-node-1.20
 eks-gpu-node-1.20
 ```
 
+preinstall.sh installs the prerequisites to install the EKS cluster using terraform. The following packages will get installed:
+- python3
+- awscli
+- aws-iam-authenticator
+- docker (required for DKube install)
+- kubectl
+- terraform
+
+Run the following commands to install the prerequisites.
+```
+# bash preinstall.sh
+# source ~/.bashrc
+```
+
+# Install EKS Cluster
+
 Run the following commands to deploy the EKS cluster and EFS endpoint
 ```
 # bash eks.sh 
+# export KUBECONFIG=$HOME/.dkube/kubeconfig
 # kubectl get nodes #to verify if you can access the nodes
 ```
 
@@ -58,7 +61,7 @@ Run the commands below to retrieve kubeconfig file
 Run the commands below to teardown the EKS cluster
 ```
 # cd eks-getting-started
-# ./terraform destroy --auto-approve
+# terraform destroy --auto-approve
 ```
 
 
