@@ -5,7 +5,7 @@ resource "rke_cluster" "cluster" {
     role    = ["controlplane", "worker", "etcd"]
     ssh_key = file("SSHKEYPATH")
   }
-  kubernetes_version = "v1.20.13-rancher1-1"
+  kubernetes_version = "v1.21.14-rancher1-1"
   network {
     mtu = 0
     options = {
