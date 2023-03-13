@@ -44,10 +44,10 @@ fi
 rm -rf terraform terraform.d terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl
 
 # extract terraform and provider modules
-if [[ -e terraform_1.1.5_linux_amd64.zip ]];then
-  unzip terraform_1.1.5_linux_amd64.zip
+if [[ -e terraform_1.4.0_linux_amd64.zip ]];then
+  unzip terraform_1.4.0_linux_amd64.zip
   if [[ "${?}" -ne 0 ]];then
-        echo "Something went wrong !! File terraform_1.1.5_linux_amd64.zip not unzipped."
+        echo "Something went wrong !! File terraform_1.4.0_linux_amd64.zip not unzipped."
         exit 1
   fi
 fi
@@ -105,8 +105,8 @@ sed -i -e "s/NODEUSER/$user/g" main.tf
 sed -i -e "s#SSHKEYPATH#$ssh_key_path#g" main.tf
 sed -i -e "s#POD_COUNT#$max_pods_per_node#g" main.tf
 if [ -z "$kubernetes_version" ]; then
-    echo "kubernetes version is not provided, using v1.16.15-rancher1-3"
-    sed -i -e "s/kubernetes_version =.*/kubernetes_version = \"v1.16.15-rancher1-3\"/g" main.tf
+    echo "kubernetes version is not provided, using v1.24.9-rancher1-3"
+    sed -i -e "s/kubernetes_version =.*/kubernetes_version = \"v1.24.9-rancher1-3\"/g" main.tf
 else
     sed -i -e "s/kubernetes_version =.*/kubernetes_version = \"$kubernetes_version\"/g" main.tf
 fi
